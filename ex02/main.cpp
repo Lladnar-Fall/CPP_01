@@ -9,7 +9,7 @@ int main(void)
 
     std::cout << "The memory addresses" << std::endl;
     std::cout << "intro: " << &intro << std::endl;
-    std::cout << "stringPTR: " << &stringPTR << std::endl;
+    std::cout << "stringPTR: " << stringPTR << std::endl;
     std::cout << "stringREF: " << &stringREF << std::endl;
     std::cout << "\n";
 

@@ -1,61 +1,68 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <iomanip>
 
 std::string replace_string(std::string line, const std::string &s1, const std::string &s2)
 {
-    int s1len = s1.length();
-    int s2len = s2.length();
+    if (s1.empty())
+        return line;
 
+    size_t s1len = s1.length();
+    size_t s2len = s2.length();
     size_t pos = line.find(s1);
+
     while (pos != std::string::npos)
     {
         line.erase(pos, s1len);
         line.insert(pos, s2);
         pos = line.find(s1, pos + s2len);
     }
-    return (line);
+    return line;
 }
 
 int main(int ac, char **av)
 {
-    
     if (ac != 4)
     {
-        std::cout << "Format: ./sed filename string1 string2" << std::endl;
-        return (1);
+        std::cerr << "Usage: ./sed <filename> <s1> <s2>" << std::endl;
+        return 1;
     }
-    std::ifstream infile;
-    std::ofstream outfile;
-    std::string line;
 
     std::string filename = av[1];
-    std::string str1 = av[2];
-    std::string str2 = av[3];
+    std::string s1 = av[2];
+    std::string s2 = av[3];
 
-    infile.open(filename.c_str());
-    if (!infile.is_open())
+    if (s1.empty() || filename.empty())
     {
-        std::cerr << "Error: could not open file " << filename << std::endl;
+        std::cerr << "Error: s1 or filename cannot be empty" << std::endl;
         return (1);
     }
-    std::string outre = filename + ".replace";
-    outfile.open(outre.c_str(), std::ios::out | std::ios::trunc);
+
+    std::ifstream infile(filename.c_str());
+    if (!infile.is_open())
+    {
+        std::cerr << "Error: could not open input file " << filename << std::endl;
+        return (1);
+    }
+
+    std::string outfilename = filename + ".replace";
+    std::ofstream outfile(outfilename.c_str());
     if (!outfile.is_open())
     {
-        std::cerr << "Error: could not create/open " << filename << ".replace" << std::endl;
+        std::cerr << "Error: could not create output file " << outfilename << std::endl;
         infile.close();
         return (1);
     }
-    while (getline(infile, line))
+
+    std::string line;
+    while (std::getline(infile, line))
     {
-        line = replace_string(line, str1, str2);
-        outfile << line << "\n";
+        outfile << replace_string(line, s1, s2);
         if (!infile.eof())
-            outfile << std::endl;
+            outfile << "\n";
     }
-    outfile.close();
+
     infile.close();
+    outfile.close();
     return (0);
 }

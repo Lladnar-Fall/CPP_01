@@ -2,8 +2,13 @@
 
 Zombie* zombieHorde(int N, std::string name)
 {
-    Zombie *newZ = new Zombie[N];
+    if (N <= 0)
+        return (NULL);
+    Zombie *horde = new Zombie[N];
     for (int i = 0; i < N; i++)
-        newZ[i].setName(name);
-    return (newZ);
+    {
+        horde[i].setName(name);
+    }
+    return horde;
 }
+//check this one again if I should have a check for n == 0 or not

@@ -1,18 +1,14 @@
 #include "Zombie.hpp"
 
-int	main(void)
+int main(void)
 {
-	std::cout << " -> Create the Zombie Riri." << std::endl;
-	Zombie riri = Zombie("Riri");
-	riri.announce();
+    std::cout << "Testing newZombie (1st Zombie)" << std::endl;
+    Zombie* Jerry = newZombie("Jerry");
+    Jerry->announce();
+    delete Jerry;
 
-	std::cout << " -> Create the Zombie Fifi with newZombie()." << std::endl;
-	Zombie*	fifi = newZombie("Fifi");
-	fifi->announce();
-	delete fifi;
+    std::cout << "\n Testing randomChump (2nd zombie) " << std::endl;
+    randomChump("Gary");
 
-	std::cout << " -> Create the Zombie Loulou with randomChump()." << std::endl;
-	randomChump("Loulou");
-
-	return 0;
+    return (0);
 }
